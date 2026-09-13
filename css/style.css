@@ -106,13 +106,18 @@ body {
 .board-card { padding: 12px; }
 .board {
   display: grid;
-  gap: 5px;
+  gap: var(--cell-gap);
   width: 100%;
   aspect-ratio: 1 / 1;
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
+  container-type: inline-size;
+  --n: 5;
+  --cell-gap: 5px;
+  /* one cell's width, so glyphs scale with the board on any screen */
+  --cell: calc((100cqw - (var(--n) - 1) * var(--cell-gap)) / var(--n));
 }
 .cell {
   border: 0;
@@ -120,16 +125,17 @@ body {
   padding: 0;
   min-width: 0; min-height: 0; overflow: hidden; /* content never resizes the grid */
   display: flex; align-items: center; justify-content: center;
-  font-size: clamp(14px, 4.2vmin, 28px);
+  font-size: calc(var(--cell) * 0.62);
   line-height: 1;
   cursor: pointer;
-  color: rgba(60, 30, 30, 0.75);
+  color: rgba(50, 25, 25, 0.8);
   box-shadow: inset 0 -3px 0 rgba(0,0,0,0.08);
   transition: transform .08s;
 }
 .cell:active { transform: scale(0.93); }
-.cell.mark::after { content: "✕"; font-weight: 700; opacity: 0.6; }
-.cell.cat::after { content: "🐱"; }
+.cell.mark::after { content: "✕"; font-weight: 800; }
+.cell.mark.on-dark { color: rgba(255, 255, 255, 0.92); }
+.cell.cat::after { content: "🐱"; font-size: calc(var(--cell) * 0.68); filter: drop-shadow(0 1px 1px rgba(0,0,0,0.25)); }
 .cell.pop::after { animation: pop .25s ease-out; }
 .cell.shake { animation: shake .35s; background-color: #ef6a6a !important; }
 @keyframes pop { 0% { transform: scale(0.4); } 70% { transform: scale(1.25); } 100% { transform: scale(1); } }

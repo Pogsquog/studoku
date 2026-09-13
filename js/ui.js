@@ -103,17 +103,26 @@
     Store.save(data);
   }
 
+  // Relative luminance of a #rrggbb colour; true when a dark glyph would be hard to read.
+  function isDark(hex) {
+    var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    return (0.299 * r + 0.587 * g + 0.114 * b) < 150;
+  }
+
   function buildBoard() {
     var board = $('board'), n = puzzle.n;
     board.innerHTML = '';
     board.style.gridTemplateColumns = 'repeat(' + n + ', minmax(0, 1fr))';
     board.style.gridTemplateRows = 'repeat(' + n + ', minmax(0, 1fr))';
+    board.style.setProperty('--n', n);
     for (var i = 0; i < n * n; i++) {
       var cell = document.createElement('button');
       cell.type = 'button';
       cell.className = 'cell';
       cell.dataset.idx = i;
-      cell.style.background = Gen.PALETTE[puzzle.regions[i]];
+      var colour = Gen.PALETTE[puzzle.regions[i]];
+      cell.style.background = colour;
+      if (isDark(colour)) cell.classList.add('on-dark'); // light ✕ on dark regions
       cell.setAttribute('aria-label', 'Row ' + (Math.floor(i / n) + 1) + ' column ' + (i % n + 1));
       board.appendChild(cell);
     }
