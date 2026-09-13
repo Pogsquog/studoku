@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7efe9">
+  <title>Catdoku</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main id="app">
+
+    <!-- ===== Game screen ===== -->
+    <section id="screen-game" class="screen">
+      <header class="topbar">
+        <button id="btn-home" class="round-btn" aria-label="Scoreboard">←</button>
+        <div class="stat"><span class="stat-label">Level</span><span id="stat-level" class="stat-value">1</span></div>
+        <div class="stat"><span class="stat-label">Score</span><span id="stat-score" class="stat-value">0</span></div>
+        <button id="btn-settings" class="round-btn" aria-label="Settings">⚙</button>
+      </header>
+
+      <div class="bars">
+        <div id="cat-bar" class="card cat-bar" aria-label="Cats placed"></div>
+        <div id="fish-bar" class="card fish-bar" aria-label="Lives"></div>
+      </div>
+
+      <div class="card rules">
+        <div class="rule">
+          <div class="mini" data-mini="region"></div>
+          <span>1 Cat per color</span>
+        </div>
+        <div class="rule">
+          <div class="mini" data-mini="rowcol"></div>
+          <span>1 Cat per column and row</span>
+        </div>
+        <div class="rule">
+          <div class="mini" data-mini="touch"></div>
+          <span>Cats cannot touch</span>
+        </div>
+      </div>
+
+      <div class="card board-card">
+        <div id="board" class="board" role="grid"></div>
+      </div>
+
+      <div class="actions">
+        <button id="btn-reveal" class="action-btn" aria-label="Reveal a cat">
+          <span class="action-icon">🐱</span><span id="reveal-count" class="badge">2</span>
+        </button>
+        <div id="timer" class="timer">0:00</div>
+        <button id="btn-hint" class="action-btn" aria-label="Hint">
+          <span class="action-icon">💡</span><span id="hint-count" class="badge">1</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== Home / scoreboard screen ===== -->
+    <section id="screen-home" class="screen" hidden>
+      <header class="topbar">
+        <div class="spacer"></div>
+        <h1 class="title">🐱 Catdoku</h1>
+        <div class="spacer"></div>
+      </header>
+      <div class="card">
+        <h2>Scoreboard</h2>
+        <table id="scoreboard" class="scoreboard">
+          <thead><tr><th></th><th>Player</th><th>Level</th><th>Score</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p id="no-players" class="muted" hidden>No players yet — add one below.</p>
+      </div>
+      <div class="card">
+        <h2>New player</h2>
+        <label class="field">
+          <span>Name (optional)</span>
+          <input id="new-name" type="text" maxlength="20" placeholder="Player" autocomplete="off">
+        </label>
+        <div class="field">
+          <span>Colour</span>
+          <div id="new-colours" class="swatches"></div>
+        </div>
+        <button id="btn-add-player" class="primary">Add player</button>
+      </div>
+      <button id="btn-play" class="primary big" hidden>Play</button>
+    </section>
+
+    <!-- ===== Settings screen ===== -->
+    <section id="screen-settings" class="screen" hidden>
+      <header class="topbar">
+        <button id="btn-settings-back" class="round-btn" aria-label="Back">←</button>
+        <h1 class="title">Settings</h1>
+        <div class="spacer"></div>
+      </header>
+      <div class="card">
+        <h2>Player</h2>
+        <label class="field">
+          <span>Name</span>
+          <input id="edit-name" type="text" maxlength="20" autocomplete="off">
+        </label>
+        <div class="field">
+          <span>Colour</span>
+          <div id="edit-colours" class="swatches"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Game</h2>
+        <label class="toggle">
+          <input id="opt-automark" type="checkbox">
+          <span>Auto-mark ✕ around placed cats</span>
+        </label>
+      </div>
+      <div class="card">
+        <h2>Danger zone</h2>
+        <button id="btn-reset-player" class="danger">Reset this player's progress</button>
+        <button id="btn-delete-player" class="danger">Delete this player</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Overlays ===== -->
+  <div id="overlay-won" class="overlay" hidden>
+    <div class="dialog">
+      <div class="dialog-emoji">😸</div>
+      <h2>Level complete!</h2>
+      <p id="won-detail"></p>
+      <p class="points">+<span id="won-points">0</span> points</p>
+      <button id="btn-next" class="primary big">Next level</button>
+    </div>
+  </div>
+  <div id="overlay-failed" class="overlay" hidden>
+    <div class="dialog">
+      <div class="dialog-emoji">🙀</div>
+      <h2>Out of fish!</h2>
+      <p>The cats scattered. Try a fresh puzzle for this level.</p>
+      <button id="btn-retry" class="primary big">Try again</button>
+    </div>
+  </div>
+  <div id="overlay-confirm" class="overlay" hidden>
+    <div class="dialog">
+      <h2 id="confirm-title">Are you sure?</h2>
+      <p id="confirm-text"></p>
+      <div class="row">
+        <button id="btn-confirm-no" class="secondary">Cancel</button>
+        <button id="btn-confirm-yes" class="danger">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/rng.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

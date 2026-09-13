@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="28" fill="#f7efe9"/>
+  <rect x="16" y="16" width="44" height="44" rx="8" fill="#d4ac0d"/>
+  <rect x="68" y="16" width="44" height="44" rx="8" fill="#2e9c5c"/>
+  <rect x="16" y="68" width="44" height="44" rx="8" fill="#f6a1e7"/>
+  <rect x="68" y="68" width="44" height="44" rx="8" fill="#f9a35b"/>
+  <text x="64" y="80" font-size="52" text-anchor="middle">🐱</text>
+</svg>
