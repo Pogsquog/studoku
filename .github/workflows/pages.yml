@@ -1,0 +1,37 @@
+# Deploys the site to GitHub Pages, stamping the commit SHA onto CSS/JS URLs
+# so browsers pick up new assets immediately instead of serving cached ones.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache-bust asset URLs
+        run: |
+          v="${GITHUB_SHA::8}"
+          sed -i -E "s#(href|src)=\"((css|js)/[^\"]+|manifest\.json|icon\.svg)\"#\1=\"\2?v=$v\"#g" index.html
+          grep -n 'v=' index.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
