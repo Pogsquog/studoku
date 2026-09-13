@@ -106,7 +106,8 @@
   function buildBoard() {
     var board = $('board'), n = puzzle.n;
     board.innerHTML = '';
-    board.style.gridTemplateColumns = 'repeat(' + n + ', 1fr)';
+    board.style.gridTemplateColumns = 'repeat(' + n + ', minmax(0, 1fr))';
+    board.style.gridTemplateRows = 'repeat(' + n + ', minmax(0, 1fr))';
     for (var i = 0; i < n * n; i++) {
       var cell = document.createElement('button');
       cell.type = 'button';

@@ -118,6 +118,7 @@ body {
   border: 0;
   border-radius: 8px;
   padding: 0;
+  min-width: 0; min-height: 0; overflow: hidden; /* content never resizes the grid */
   display: flex; align-items: center; justify-content: center;
   font-size: clamp(14px, 4.2vmin, 28px);
   line-height: 1;
