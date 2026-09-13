@@ -197,10 +197,43 @@
     saveProgress();
   }
 
+  var LONG_PRESS_MS = 450;
+  var pressTimer = null, pressCleared = false;
+
   function onTap(e) {
     var cell = e.target.closest('.cell');
     if (!cell || !game) return;
+    if (pressCleared) { pressCleared = false; return; } // click following a long-press
     handleEvent(game.tap(Number(cell.dataset.idx), data.settings.autoMark));
+  }
+
+  function clearCell(cell) {
+    if (!cell || !game) return;
+    handleEvent(game.clear(Number(cell.dataset.idx)));
+  }
+
+  function onPressStart(e) {
+    var cell = e.target.closest('.cell');
+    if (!cell || !game || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    cancelPress();
+    pressTimer = setTimeout(function () {
+      pressTimer = null;
+      pressCleared = true;
+      clearCell(cell);
+    }, LONG_PRESS_MS);
+  }
+
+  function cancelPress() {
+    if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+  }
+
+  function onContextMenu(e) {
+    var cell = e.target.closest('.cell');
+    if (!cell) return;
+    e.preventDefault();
+    cancelPress();
+    if (pressCleared) return; // long-press already handled it
+    clearCell(cell);
   }
 
   // ---------- home ----------
@@ -262,7 +295,13 @@
     data = Store.load();
     renderMinis();
 
-    $('board').addEventListener('click', onTap);
+    var board = $('board');
+    board.addEventListener('click', onTap);
+    board.addEventListener('pointerdown', onPressStart);
+    board.addEventListener('pointerup', cancelPress);
+    board.addEventListener('pointercancel', cancelPress);
+    board.addEventListener('pointerleave', cancelPress);
+    board.addEventListener('contextmenu', onContextMenu);
     $('btn-hint').onclick = function () { handleEvent(game.useHint()); };
     $('btn-reveal').onclick = function () { handleEvent(game.useReveal()); };
     $('btn-home').onclick = function () { saveProgress(); renderHome(); showScreen('home'); };

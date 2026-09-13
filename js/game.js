@@ -76,6 +76,13 @@
     return { type: 'clear', idx: idx };
   };
 
+  // Long-press / right-click: clear a cell directly without cycling through CAT.
+  Game.prototype.clear = function (idx) {
+    if (this.status !== 'playing' || this.cells[idx] === EMPTY) return { type: 'ignored' };
+    this.cells[idx] = EMPTY;
+    return { type: 'clear', idx: idx };
+  };
+
   Game.prototype.placeCat = function (idx, autoMark) {
     if (!this.isCatCell(idx)) {
       this.cells[idx] = MARK;

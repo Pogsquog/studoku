@@ -6,7 +6,8 @@ An ad-free web clone of the "one cat per colour" puzzle (a Star Battle / Queens 
 
 Place exactly one cat in every **colour region**, every **row** and every **column**.
 Cats cannot touch each other, not even diagonally. Tap a cell to mark it ✕, tap again
-to place a cat, tap once more to clear it. A wrong cat costs a fish; lose all three and
+to place a cat, tap once more to clear it. Long-press (or right-click) a cell to clear it
+directly without placing a cat. A wrong cat costs a fish; lose all three and
 you get a fresh puzzle for that level.
 
 - 💡 **Hint** (1 per level) marks cells that can be ruled out.
