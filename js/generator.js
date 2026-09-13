@@ -315,7 +315,7 @@
 
   function puzzleForLevel(level, attempt) {
     attempt = attempt || 0;
-    var seed = Rng.hashSeed('catdoku', level, attempt);
+    var seed = Rng.hashSeed('studoku', level, attempt);
     var rng = Rng.mulberry32(seed);
     var n = sizeForLevel(level, rng);
     var irregularity = 0.2 + rng() * 0.7;

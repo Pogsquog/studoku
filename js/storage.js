@@ -2,7 +2,7 @@
 (function (root) {
   'use strict';
 
-  var KEY = 'catdoku.v1';
+  var KEY = 'studoku.v1';
 
   var PLAYER_COLOURS = [
     '#e5533c', '#f28c28', '#e6b400', '#5cb85c', '#2aa7b8', '#3b7dd8',

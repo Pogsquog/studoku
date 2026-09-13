@@ -1,4 +1,4 @@
-# Catdoku
+# Studoku
 
 An ad-free web clone of the "one cat per colour" puzzle (a Star Battle / Queens variant).
 

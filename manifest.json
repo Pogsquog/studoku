@@ -1,6 +1,6 @@
 {
-  "name": "Catdoku",
-  "short_name": "Catdoku",
+  "name": "Studoku",
+  "short_name": "Studoku",
   "description": "Place one cat per colour, row and column. No touching!",
   "start_url": "./index.html",
   "display": "standalone",
